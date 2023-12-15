@@ -11,13 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        commit-message: "Auto-generated changes"
-        title: "Auto-generated Pull Request"
-        body: "This pull request is automatically generated."
-        branch: dev
+      - name: Set up GitHub CLI
+        run: |
+          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
+          gh auth login --with-token <<<"${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create Pull Request
+        run: |
+          # Target branch for the pull request
+          target_branch="dev"
+          gh pr create --base "$target_branch" --head "${GITHUB_REF#refs/heads/}" --title "Auto-generated Pull Request" --body "This pull request is automatically generated."
