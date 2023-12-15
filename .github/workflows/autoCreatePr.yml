@@ -20,4 +20,4 @@ jobs:
         commit-message: "Auto-generated changes"
         title: "Auto-generated Pull Request"
         body: "This pull request is automatically generated."
-        branch: dev
+        base: dev
