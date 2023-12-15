@@ -17,6 +17,8 @@ jobs:
     - name: Create Pull Request Branch
       run: |
         git checkout -B create-pull-request/patch
+        git fetch origin create-pull-request/patch:refs/remotes/origin/create-pull-request/patch
+        git reset --hard origin/create-pull-request/patch
         git push origin create-pull-request/patch || true
 
     - name: Create Pull Request
