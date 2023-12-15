@@ -16,10 +16,11 @@ jobs:
 
     - name: Create Pull Request Branch
       run: |
+        # Create a new branch 'create-pull-request/patch'
         git checkout -B create-pull-request/patch
-        git fetch origin create-pull-request/patch:refs/remotes/origin/create-pull-request/patch
-        git reset --hard origin/create-pull-request/patch
-        git push origin create-pull-request/patch || true
+        # Fetch changes from the specified branch (feature or bugs)
+        git fetch origin ${{ github.event_name == 'push' && contains(github.event.ref, 'feature') && 'feature' || 'bugs' }}:refs/remotes/origin/source-branch
+        git reset --hard origin/source-branch
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
