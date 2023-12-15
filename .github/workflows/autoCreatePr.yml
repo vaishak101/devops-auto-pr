@@ -20,7 +20,7 @@ jobs:
         git checkout -B create-pull-request/patch
         # Fetch changes from the specified branch (feature or bugs)
         git fetch origin ${{ github.event_name == 'push' && contains(github.event.ref, 'feature') && 'feature' || 'bugs' }}:refs/remotes/origin/source-branch
-        git reset --hard origin/source-branch
+        git reset --hard FETCH_HEAD
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
