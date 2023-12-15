@@ -16,9 +16,8 @@ jobs:
 
     - name: Create Pull Request Branch
       run: |
-        # Assuming HEAD is at the commit you want to create a pull request from
-        git checkout -b create-pull-request/patch
-        git push origin create-pull-request/patch
+        git checkout -B create-pull-request/patch
+        git push origin create-pull-request/patch || true
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
