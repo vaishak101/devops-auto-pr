@@ -1,4 +1,4 @@
-name: Auto Create Pull Request
+name: Auto Create and Merge Pull Request
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - bugs
 
 jobs:
-  create-pr:
+  create-and-merge-pr:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,11 +16,17 @@ jobs:
 
       - name: Set up GitHub CLI
         run: |
-          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
-          gh auth login --with-token <<<"${{ secrets.GITHUB_TOKEN }}"
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Create Pull Request
         run: |
-          # Target branch for the pull request
+          git config --global user.email "vaishak101@gmail.com"
+          git config --global user.name "Vaishak Nair"
+
           target_branch="dev"
+
           gh pr create --base "$target_branch" --head "${GITHUB_REF#refs/heads/}" --title "Auto-generated Pull Request" --body "This pull request is automatically generated."
+
+      - name: Merge Pull Request
+        run: |
+          gh pr merge --auto --merge "$target_branch"
