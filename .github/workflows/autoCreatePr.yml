@@ -11,24 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Create Pull Request Branch
-      run: |
-        # Create a new branch 'create-pull-request/patch'
-        git checkout -B create-pull-request/patch
-        # Fetch changes from the specified branch (feature or bugs)
-        git fetch origin ${{ github.event_name == 'push' && contains(github.event.ref, 'feature') && 'feature' || 'bugs' }}:refs/remotes/origin/source-branch
-        # Explicitly fetch the 'create-pull-request/patch' branch
-        git fetch origin create-pull-request/patch:refs/remotes/origin/create-pull-request/patch
-        git reset --hard origin/create-pull-request/patch
+      - name: Create Pull Request
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
 
+          # Target branch for the pull request
+          target_branch="dev"
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        commit-message: "Auto-generated changes"
-        title: "Auto-generated Pull Request"
-        body: "This pull request is automatically generated."
-        base: dev
+          gh pr create --base "$target_branch" --head "${GITHUB_REF#refs/heads/}" --title "Auto-generated Pull Request" --body "This pull request is automatically generated."
