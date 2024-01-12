@@ -37,7 +37,7 @@ jobs:
           current_branch="${GITHUB_REF#refs/heads/}"
 
           # Check if the current branch is behind the target branch
-          if git pull --dry-run origin "$target_branch" | grep -q 'up to date'; then
+          if [ "$(git rev-list $target_branch..$current_branch)" ]; then
             echo "Error: The $current_branch branch is behind $target_branch. Please create a pull request from $target_branch before pushing changes."
             exit 1
           fi
