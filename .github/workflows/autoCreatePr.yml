@@ -18,6 +18,10 @@ jobs:
         run: |
           gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
+      - name: Pull latest changes from the current branch
+        run: |
+          git pull origin "${GITHUB_REF#refs/heads/}"
+
       - name: Debug Output
         run: |
           echo "Current Branch: ${GITHUB_REF#refs/heads/}"
