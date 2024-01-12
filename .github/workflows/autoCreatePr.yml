@@ -31,17 +31,16 @@ jobs:
           echo "HEAD: $(git rev-parse HEAD)"
           echo "Origin/dev: $(git rev-parse origin/dev)"
 
-      - name: Check if branch is synced with Dev
+      - name: Check if branch is behind Dev
         run: |
           target_branch="dev"
           current_branch="${GITHUB_REF#refs/heads/}"
 
           # Check if the current branch is behind the target branch
-          if git fetch origin "$target_branch" && [ "$(git rev-parse origin/$target_branch)" != "$(git rev-parse $current_branch)" ]; then
+          if git pull --dry-run origin "$target_branch" | grep -q 'up to date'; then
             echo "Error: The $current_branch branch is behind $target_branch. Please create a pull request from $target_branch before pushing changes."
             exit 1
           fi
-
 
       - name: Create Pull Request
         run: |
