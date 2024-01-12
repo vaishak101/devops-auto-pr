@@ -37,7 +37,7 @@ jobs:
           current_branch="${GITHUB_REF#refs/heads/}"
 
           # Check if the current branch is behind the target branch
-          if git fetch origin "$target_branch" && [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/$target_branch)" ]; then
+          if git fetch origin "$target_branch" && [ "$(git rev-parse origin/$target_branch)" != "$(git rev-parse HEAD)" ]; then
             echo "Error: The $current_branch branch is not synced with $target_branch. Please create a pull request from $target_branch before pushing changes."
             exit 1
           fi
