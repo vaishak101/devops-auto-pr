@@ -22,7 +22,7 @@ jobs:
         run: |
           git fetch origin dev
           behind_count=$(git rev-list --left-right --count origin/dev...HEAD)
-          if [[ $behind_count -gt 0 ]]; then
+          if [ "$behind_count" -gt 0 ]; then
             echo "Error: The current branch is behind dev. Please sync the current branch to dev before pushing changes."
             exit 1
           fi
