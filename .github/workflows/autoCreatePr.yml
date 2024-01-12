@@ -18,6 +18,15 @@ jobs:
         run: |
           gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
+      - name: Debug Output
+        run: |
+          echo "Current Branch: ${GITHUB_REF#refs/heads/}"
+          git log --oneline -n 5  # Show the last 5 commits for debugging
+          git fetch origin dev   # Fetch the latest changes from dev for debugging
+          git log --oneline -n 5  # Show the last 5 commits after fetching
+          echo "HEAD: $(git rev-parse HEAD)"
+          echo "Origin/dev: $(git rev-parse origin/dev)"
+
       - name: Check if branch is synced with Dev
         run: |
           target_branch="dev"
